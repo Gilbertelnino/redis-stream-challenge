@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1 {
+        text-align: center;
+        padding: 6rem 0;
+      }
+      form {
+        text-align: center;
+      }
+      textarea {
+        outline: none;
+        color: #111;
+        border: 1px solid #f3f3f3;
+      }
+      button {
+        padding: 10px;
+        color: white;
+        border: none;
+        background-color: brown;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hello socket.io client</h1>
+
+    <form id="form">
+      <textarea
+        name="message"
+        placeholder="write message here"
+        cols="30"
+        rows="10"
+        id="msg"
+      ></textarea>
+
+      <button>submit</button>
+
+      <h1 id="alert"></h1>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      const socket = io.connect("http://localhost:5500");
+
+      const sendMessage = (e) => {
+        e.preventDefault();
+        const message = document.getElementById("msg").value;
+        socket.emit("message", { name: message });
+      };
+
+      const form = document.getElementById("form");
+
+      form.addEventListener("submit", sendMessage);
+
+      const h1 = document.getElementById("alert");
+
+      socket.on("messageRecieved", (data) => {
+        h1.innerHTML = data;
+      });
+    </script>
+  </body>
+</html>
